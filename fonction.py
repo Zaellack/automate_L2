@@ -1,46 +1,68 @@
-# Définir une matrice de 3 x 4
-matrice = [
-    [1, 0, 0],
-    [2, 0, 0],
-    [3, 0, 0]
-]
-
 def ajoute_int(matrice, entier, a_ou_b, h):
-    for i in range(len(matrice)):
-        if entier in [ligne[0] for ligne in matrice]:
-            ligne = [elem for elem in matrice[i] if elem != '']
-            if a_ou_b == 'a':
-                ligne[1] = h
-            elif a_ou_b == 'b':
-                ligne[2] = h
-            elif a_ou_b == 'c':
-                ligne[3] = h
-            matrice[i] = ligne
-            break
-    else:
-        matrice.append([entier] + [0] * (len(matrice[0]) - 1))
+    """permet de remplir la table de transition"""
+    if not matrice:
         if a_ou_b == 'a':
-            matrice[-1][1] = h
+            matrice.append([entier, h, 0, 0])
         elif a_ou_b == 'b':
-            matrice[-1][2] = h
+            matrice.append([entier, 0, h, 0])
         elif a_ou_b == 'c':
-            matrice[-1][3] = h
+            matrice.append([entier, 0, 0, h])
+    else:
         for i in range(len(matrice)):
-            if matrice[i][0] == entier:
-                matrice[i] = [entier] + [elem for elem in matrice[i][1:] if elem != '']
+            if entier == matrice[i][0]:
+                if a_ou_b == 'a':
+                    matrice[i][1] = h
+                elif a_ou_b == 'b':
+                    matrice[i][2] = h
+                elif a_ou_b == 'c':
+                    matrice[i][3] = h
                 break
+        else:
+            matrice.append([entier] + ['/'] * (len(matrice[0]) - 1))
+            for i in range(len(matrice)):
+                if matrice[i][0] == entier:
+                    if a_ou_b == 'a':
+                        matrice[i][1] = h
+                    elif a_ou_b == 'b':
+                        matrice[i][2] = h
+                    elif a_ou_b == 'c':
+                        matrice[i][3] = h
+                    break
+
     return matrice
-matrice=[[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
-# Ajouter l'entier 2 dans la colonne 'a'
-print(ajoute_int(matrice, 1, 'a',3))
 
+i=0
+def Afficher(fichier):
+    """Permet d'afficher la table de transition"""
+    EI=[]
 
-# Ajouter l'entier 5 dans la colonne 'b'
-print(ajoute_int(matrice, 5, 'b',6))
-
-def creer_matrice(n, s):
-    matrice = []
-    for i in range(n):
-        ligne = [0] * s
-        matrice.append(ligne)
-    return matrice
+    ET=[]
+    with open(fichier, "r") as f:
+        ligne = f.readline()
+        col = ligne.strip()  # nbr alphabet
+        col=int(col)
+        ligne = f.readline()
+        lig = ligne.strip()  # nbr etat
+        lig=int(lig)
+        ligne = f.readline()
+        EI = ligne.strip(" ") #etat initial
+        ligne = f.readline()
+        ET = ligne.strip(" ") #etat terminal
+        ligne = f.readline()
+        nbr_transition = ligne.strip()  # etat terminal
+        ligne = f.readline()
+        b = list(ligne.strip())  # etat terminal
+        print("Etat(s) initial(aux) : ",EI[1:])#affiche le ou les EI
+        print("Etat(s) terminal(aux) : ",ET[1:])#affiche le ou les ET
+        matrice=[]
+        for p in range(int(nbr_transition)):
+            temp =list(ligne.strip())
+            print(temp)
+            matrice=ajoute_int(matrice,int(temp[0]),temp[1],int(temp[2]))
+            ligne = f.readline()
+    print("\ntable de transition : ")
+    for c in range(lig ):
+        for j in range(4):
+            print(matrice[c][j], end=' ')
+        print("\n")
+    print("\n")
