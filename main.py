@@ -1,4 +1,4 @@
 import fonction as fct
 
 
-fct.Afficher("C3-8.txt")
+fct.Afficher("C3-5.txt")

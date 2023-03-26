@@ -66,3 +66,25 @@ def Afficher(fichier):
             print(matrice[c][j], end=' ')
         print("\n")
     print("\n")
+
+def deterministe(fichier):
+    transition = []
+    est_deterministe = True
+    nb_transition = 0
+    with open(fichier, 'r') as f:
+
+        #Passe les 5 premières lignes :
+        ligne = f.readline()
+        ligne = f.readline()
+        ligne = f.readline()
+        ligne = f.readline()
+        ligne = f.readline()
+        nb_transition = ligne.strip()
+
+        for i in range(int(nb_transition)):
+            ligne = f.readline()
+            if ligne[:2] in transition:
+                est_deterministe = False
+            transition.append(ligne[:2])
+
+        print("L'automate est déterministe : ", est_deterministe)
